@@ -13,10 +13,25 @@
 - name: Run ansible-kerberos-server Tests
   hosts: docker_containers
   vars:
-    ports: [22, 1025, 1026]
+    realm_name: TEST.DEMO.COM
+    kdc_port: 88
+    master_db_pass: m4st3r
+    kadmin_user: kadmin
+    kadmin_pass: k4dm1n
+    test_primary: testuser
   roles:
     - role: ansible-kerberos-server
-      iptables_allowed_tcp_ports: "{{ ports }}"
+      realm_name: "{{ realm_name }}"
+      kdc_port: "{{ kdc_port }}"
+      master_db_pass: "{{ master_db_pass }}"
+      kadmin_user: "{{ kadmin_user }}"
+      kadmin_pass: "{{ kadmin_pass }}"
   tasks:
-    - name: Test ports
-      command: 'echo "hello world"'
+    - name: List Principals on Kerberos
+      command: 'kadmin.local -r {{ realm_name }} -q "listprincs"'
+    - name: Create a test principal
+      command: 'kadmin.local -r {{ realm_name }} -q "add_principal -nokey {{ test_primary }}@{{ realm_name }}"'
+    - name: Create a test keytab from test principal
+      command: 'kadmin.local -r {{ realm_name }} -q "ktadd -norandkey {{ test_primary }}@{{ realm_name }} -k {{ test_primary }}.keytab"'
+    - name: Login on Kerberos Server using sample keytab
+      command: 'kinit -kt {{ test_primary }}.keytab {{ test_primary }}@{{ realm_name }}'
