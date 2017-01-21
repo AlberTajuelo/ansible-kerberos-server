@@ -3,37 +3,37 @@
 - name: Add the OS specific varibles
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Install the kerberos packages 
+- name: Install Kerberos packages
   yum: name={{ item }} state=present
-  with_items: kerberos_server_redhat_pkg
+  with_items: "{{ redhat_pkg }}"
 
-- name: Copy the kdc configuration file 
+- name: Copy KDC configuration file
   template: src=kdc.conf.j2 dest=/var/kerberos/krb5kdc/kdc.conf
   notify: 
    - restart kerberos
 
-- name: Copy the kdc acl configuration file 
+- name: Copy KDC ACL configuration file
   template: src=kadm5.acl.j2 dest=/var/kerberos/krb5kdc/kadm5.acl
   notify: 
    - restart kerberos
 
-- name: Copy the client configuration file 
+- name: Copy client configuration file
   template: src=krb5.conf.j2 dest=/etc/krb5.conf
 
 - name: Link /dev/random to /dev/urandom
   file: path=/dev/random src=/dev/urandom state=link force=yes
 
 - name: Create the initial kerberos database
-  shell: echo -e "{{ kerberos_server_master_db_pass }}\n{{ kerberos_server_master_db_pass }}" | kdb5_util create -s; touch /var/kerberos/db_created creates=/var/kerberos/db_created
+  shell: kdb5_util -P {{ master_db_pass }} create -s; touch /var/kerberos/db_created creates=/var/kerberos/db_created
 
 - name: Make sure we have the entry for hostname in /etc/hosts
   lineinfile: state=present dest=/etc/hosts
-              regexp='.*{{ ansible_default_ipv4.address  }}\s*{{ ansible_hostname  }}\s*{{ ansible_hostname  }}.{{ kerberos_server_realm_name|lower()  }}'
-              line='{{ ansible_default_ipv4.address  }} {{ ansible_hostname  }} {{ ansible_hostname  }}.{{ kerberos_server_realm_name|lower()  }}'
+              regexp='.*{{ ansible_default_ipv4.address }}\s*{{ ansible_hostname }}\s*{{ ansible_hostname }}.{{ kerberos_server_realm_name|lower() }}'
+              line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ kerberos_server_realm_name|lower() }}'
 
 - name: Start the kerberos services 
   service: name={{ item }} state=started enabled=yes
-  with_items: kerberos_service
+  with_items: "{{ kerberos_service }}"
 
-- name: Create an admin for the administering the kerberos database
-  shell: echo -e "{{ kerberos_server_kadmin_pass }}\n{{ kerberos_server_kadmin_pass }}" | kadmin.local  -q "addprinc {{ kerberos_server_kadmin_user }}/admin"; touch /var/kerberos/admin_created creates=/var/kerberos/admin_created
+- name: Create an admin for administering Kerberos server
+  shell: kadmin.local -q "addprinc -pw {{ kadmin_pass }} {{ kadmin_user }}/admin"; touch /var/kerberos/admin_created creates=/var/kerberos/admin_created
