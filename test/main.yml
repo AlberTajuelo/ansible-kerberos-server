@@ -28,9 +28,9 @@
       kadmin_pass: "{{ kadmin_pass }}"
   tasks:
     - name: List Principals on Kerberos
-      command: 'kadmin.local -r {{ realm_name }} -q "listprincs"'
+      command: 'kadmin.local -r {{ realm_name }} -q \"listprincs\"'
     - name: Create a test principal
-      command: 'kadmin.local -r {{ realm_name }} -q "add_principal -nokey {{ test_primary }}@{{ realm_name }}"'
+      command: 'kadmin.local -r {{ realm_name }} -q '"add_principal -nokey {{ test_primary }}@{{ realm_name }}"'
     - name: Create a test keytab from test principal
       command: 'kadmin.local -r {{ realm_name }} -q "ktadd -norandkey {{ test_primary }}@{{ realm_name }} -k {{ test_primary }}.keytab"'
     - name: Login on Kerberos Server using sample keytab
