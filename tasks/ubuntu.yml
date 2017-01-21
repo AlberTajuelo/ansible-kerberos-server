@@ -24,7 +24,7 @@
   when: install.changed
 
 - name: Make sure we have the entry for hostname in /etc/hosts
-  lineinfile: state=present path=/etc/hosts
+  lineinfile: state=present dest=/etc/hosts
               regexp='.*{{ ansible_default_ipv4.address }}\s*{{ ansible_hostname }}\s*{{ ansible_hostname }}.{{ realm_name|lower() }}'
               line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ realm_name|lower() }}'
               unsafe_writes=yes
