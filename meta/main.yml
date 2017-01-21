@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: AlberTajuelo
+  description: Create a Kerberos Server fast and easy.
+  company: Chiabit
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+  - name: EL
+    versions:
+    - all
+  galaxy_tags:
+    - kerberos server
+    - kadmin
+    - kdc
+    - krb5
+  github_branch: master
+dependencies: []
