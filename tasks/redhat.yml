@@ -23,8 +23,8 @@
   name: "Create the initial kerberos database"
   shell: "kdb5_util -P {{ master_db_pass }} create -s; touch /var/kerberos/db_created creates=/var/kerberos/db_created"
 - 
-  host: "ip={{ ansible_default_ipv4.address }} hostname={{ ansible_hostname }} alias=\"{{ ansible_hostname + '.' + realm_name|lower() }}\""
   name: "Make sure we have the entry for hostname in /etc/hosts"
+  host: "ip={{ ansible_default_ipv4.address }} hostname={{ ansible_hostname }} alias=\"{{ ansible_hostname }}.{{ realm_name|lower() }}\""
 - 
   name: "Start Kerberos service"
   service: "name={{ item }} state=started enabled=yes"
