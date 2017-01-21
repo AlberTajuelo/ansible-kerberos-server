@@ -21,11 +21,6 @@
     test_primary: testuser
   roles:
     - role: ansible-kerberos-server
-      realm_name: "{{ realm_name }}"
-      kdc_port: "{{ kdc_port }}"
-      master_db_pass: "{{ master_db_pass }}"
-      kadmin_user: "{{ kadmin_user }}"
-      kadmin_pass: "{{ kadmin_pass }}"
   tasks:
     - name: List Principals on Kerberos
       shell: kadmin.local -r {{ realm_name }} -q "listprincs"
