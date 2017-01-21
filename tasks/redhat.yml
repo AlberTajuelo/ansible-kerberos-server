@@ -27,9 +27,10 @@
   shell: kdb5_util -P {{ master_db_pass }} create -s; touch /var/kerberos/db_created creates=/var/kerberos/db_created
 
 - name: Make sure we have the entry for hostname in /etc/hosts
-  lineinfile: state=present dest=/etc/hosts
+  lineinfile: state=present path=/etc/hosts
               regexp='.*{{ ansible_default_ipv4.address }}\s*{{ ansible_hostname }}\s*{{ ansible_hostname }}.{{ realm_name|lower() }}'
               line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ realm_name|lower() }}'
+              unsafe_writes=yes
 
 - name: Start the kerberos services 
   service: name={{ item }} state=started enabled=yes

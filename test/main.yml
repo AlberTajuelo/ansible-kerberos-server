@@ -6,6 +6,12 @@
     inventory:
       - name: kerberos_server_host1
         image: "chrismeyers/centos6"
+      - name: kerberos_server_host2
+        image: "chrismeyers/centos7"
+      - name: kerberos_server_host3
+        image: "chrismeyers/ubuntu12.04"
+      - name: kerberos_server_host4
+        image: "ubuntu-upstart:14.04"
   roles:
     - role: provision_docker
       provision_docker_inventory: "{{ inventory }}"
