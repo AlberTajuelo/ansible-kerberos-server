@@ -25,8 +25,8 @@
 
 - name: Make sure we have the entry for hostname in /etc/hosts
   lineinfile: state=present dest=/etc/hosts
-              regexp='.*{{ ansible_default_ipv4.address }}\s*{{ ansible_hostname }}\s*{{ ansible_hostname }}.{{ kerberos_server_realm_name|lower() }}'
-              line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ kerberos_server_realm_name|lower() }}'
+              regexp='.*{{ ansible_default_ipv4.address }}\s*{{ ansible_hostname }}\s*{{ ansible_hostname }}.{{ realm_name|lower() }}'
+              line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ realm_name|lower() }}'
 
 - name: Start the kerberos services
   service: name={{ item }} state=started enabled=yes
@@ -35,5 +35,3 @@
 - name: Create an admin for the administering the kerberos database
   script: create_admin.sh {{ kadmin_pass }} {{ kadmin_user }}
   when: install.changed
-
-
