@@ -1,0 +1,5 @@
+---
+
+kerberos_service:
+  - krb5-kdc
+  - krb5-admin-server
