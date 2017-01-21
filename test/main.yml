@@ -4,18 +4,18 @@
   gather_facts: false
   vars:
     inventory:
-      - name: iptables_host_1
+      - name: kerberos_server_host1
         image: "chrismeyers/centos6"
   roles:
     - role: provision_docker
       provision_docker_inventory: "{{ inventory }}"
 
-- name: Run iptables Tests
+- name: Run ansible-kerberos-server Tests
   hosts: docker_containers
   vars:
     ports: [22, 1025, 1026]
   roles:
-    - role: iptables
+    - role: ansible-kerberos-server
       iptables_allowed_tcp_ports: "{{ ports }}"
   tasks:
     - name: Test ports
