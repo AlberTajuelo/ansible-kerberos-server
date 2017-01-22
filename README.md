@@ -38,7 +38,7 @@ Main workflow
 
 This role does:
 * Download specific Kerberos packages (this packages are os-dependent).
-* Configuring Kerberos Server/Client files:
+* Configuring Kerberos Server files:
  * kdc.conf
  * kadm5.acl
  * krb5.conf
@@ -62,7 +62,7 @@ Example Playbook
 
 In the folder, `example` you can check an example project that shows how to deploy a Kerberos Server in two hosts.
 
-In order to run it, you will need to have Vagrant and the **ansible-kerberos-server** roles installed. Please check https://www.vagrantup.com for more information about Vagrant and our Installation section.
+In order to run it, you will need to have Vagrant and the **ansible-kerberos-server** role installed. Please check https://www.vagrantup.com for more information about Vagrant and our Installation section.
 
 ```
 $ cd example/my-playbook
@@ -81,7 +81,7 @@ Future Improvements
 -------------------
 
 - [ ] Possibility to create multiple KDC slaves.
-- [ ] Flag to enable/disable to an admin user.
+- [ ] Flag to enable/disable to create an admin user.
 - [ ] Disable linking "/dev/urandom" to "/dev/random" and use a "secure" random generator tool (could be "haveged"?).
 - [ ] Install NTP firstly.
 - [ ] Possibility to have multiple KDC ports.
