@@ -38,10 +38,10 @@ Main workflow
 
 This role does:
 * Download specific Kerberos packages (this packages are os-dependent).
-* Configuring Kerberos Server/Client:
-** kdc.conf file
-** kadm5.acl
-** krb5.conf
+* Configuring Kerberos Server/Client files:
+ * kdc.conf
+ * kadm5.acl
+ * krb5.conf
 * Create an admin user
 
 Role Variables
