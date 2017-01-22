@@ -1,5 +1,14 @@
 ---
 
+- name: Make sure we have the entry for hostname in /etc/hosts
+  lineinfile: state=present dest=/etc/hosts
+              regexp='.*{{ ansible_default_ipv4.address }}\s*{{ ansible_hostname }}\s*{{ ansible_hostname }}.{{ realm_name|lower() }}'
+              line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ realm_name|lower() }}'
+              unsafe_writes=yes
+
+- name: Link /dev/random to /dev/urandom
+  file: path=/dev/random src=/dev/urandom state=link force=yes
+
 - name: Add OS specific variables
   include_vars: "{{ ansible_os_family }}.yml"
 
@@ -14,9 +23,6 @@
   notify: 
    - restart kerberos
 
-- name: Link /dev/random to /dev/urandom
-  file: path=/dev/random src=/dev/urandom state=link force=yes
-
 - name: Copy KDC ACL configuration file
   template: src=kadm5.acl.j2 dest="{{ kadm5_acl_path }}"
   notify: 
@@ -27,12 +33,6 @@
 
 - name: Create initial Kerberos database
   shell: kdb5_util -P {{ master_db_pass }} create -s
-
-- name: Make sure we have the entry for hostname in /etc/hosts
-  lineinfile: state=present dest=/etc/hosts
-              regexp='.*{{ ansible_default_ipv4.address }}\s*{{ ansible_hostname }}\s*{{ ansible_hostname }}.{{ realm_name|lower() }}'
-              line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ realm_name|lower() }}'
-              unsafe_writes=yes
 
 - name: Start Kerberos services 
   service: name={{ item }} state=started enabled=yes
