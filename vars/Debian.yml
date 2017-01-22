@@ -9,5 +9,5 @@
   - krb5-admin-server
   - python-selinux
 
-  kdc_conf_path: /etc/krb5/kdc.conf
-  kadm5_acl_path: /etc/krb5/kadm5.acl  
+  kdc_conf_path: /etc/krb5kdc/kdc.conf
+  kadm5_acl_path: /etc/krb5kdc/kadm5.acl  
