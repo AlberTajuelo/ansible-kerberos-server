@@ -4,10 +4,8 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Install needed Kerberos packages
-  package:
-    name: {{ item }}
-    state: latest
-    with_items: "{{ krb_pkg }}"
+  package: name: "{{ item }}" state: latest
+  with_items: "{{ krb_pkg }}"
 
 - name: Copy KDC configuration file
   template: src=kdc.conf.j2 dest=/var/kerberos/krb5kdc/kdc.conf
