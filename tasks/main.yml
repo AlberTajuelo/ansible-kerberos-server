@@ -10,7 +10,7 @@
   with_items: "{{ krb_pkg }}"
 
 - name: Copy KDC configuration file
-  template: src=kdc.conf.j2 dest=/var/kerberos/krb5kdc/kdc.conf
+  template: src=kdc.conf.j2 dest="{{ kdc_conf_path }}"
   notify: 
    - restart kerberos
 
@@ -18,14 +18,14 @@
   file: path=/dev/random src=/dev/urandom state=link force=yes
 
 - name: Copy KDC ACL configuration file
-  template: src=kadm5.acl.j2 dest=/var/kerberos/krb5kdc/kadm5.acl
+  template: src=kadm5.acl.j2 dest="{{ kadm5_acl_path }}"
   notify: 
    - restart kerberos
 
 - name: Copy client configuration file
   template: src=krb5.conf.j2 dest=/etc/krb5.conf
 
-- name: Create initial kerberos database
+- name: Create initial Kerberos database
   shell: kdb5_util -P {{ master_db_pass }} create -s
 
 - name: Make sure we have the entry for hostname in /etc/hosts
@@ -34,7 +34,7 @@
               line='{{ ansible_default_ipv4.address }} {{ ansible_hostname }} {{ ansible_hostname }}.{{ realm_name|lower() }}'
               unsafe_writes=yes
 
-- name: Start kerberos services 
+- name: Start Kerberos services 
   service: name={{ item }} state=started enabled=yes
   with_items: "{{ krb_service }}"
 
