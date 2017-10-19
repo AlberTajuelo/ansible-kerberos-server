@@ -26,16 +26,16 @@
 
 - name: Copy KDC configuration file
   template:
-    src: dc.conf.j2
+    src: kdc.conf.j2
     dest: "{{ kdc_conf_path }}"
-  notify: 
+  notify:
    - restart kerberos
 
 - name: Copy KDC ACL configuration file
   template:
     src: kadm5.acl.j2
     dest: "{{ kadm5_acl_path }}"
-  notify: 
+  notify:
    - restart kerberos
 
 - name: Copy client configuration file
@@ -46,7 +46,7 @@
 - name: Create initial Kerberos database
   shell: kdb5_util -P {{ master_db_pass }} create -s
 
-- name: Start Kerberos services 
+- name: Start Kerberos services
   service:
     name: "{{ item }}"
     state: started
